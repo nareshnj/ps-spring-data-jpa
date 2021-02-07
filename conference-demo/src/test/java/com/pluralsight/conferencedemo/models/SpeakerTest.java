@@ -7,8 +7,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import javax.transaction.Transactional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 public class SpeakerTest {
@@ -36,6 +37,18 @@ public class SpeakerTest {
         assertEquals("Dan", otherSpeaker.getFirstName());
 
         jpaRepository.deleteById(otherSpeaker.getSpeakerId());
+    }
+
+    @Test
+    public void testJpaAndOperator() {
+        List<Speaker> speakers = jpaRepository.findByFirstNameAndLastName("James","Lowrey");
+        assertTrue(speakers.size() == 1);
+    }
+
+    @Test
+    public void testJpaOrOperator() {
+        List<Speaker> speakers = jpaRepository.findByFirstNameOrLastName("James","Lowrey");
+        assertTrue(speakers.size() == 4);
     }
 
 }
